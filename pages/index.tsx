@@ -1,6 +1,26 @@
 import Head from "next/head";
+import { supabase } from "../client";
+import { useState} from "react";
+
 
 export default function Home() {
+  const initialTask = {
+    Name: "",
+    Activity: "",
+    StartDate: "",
+    EndDate: ""
+  }
+  const [task, setTask] = useState(initialTask);
+
+  const { Name, Activity, StartDate, EndDate } = task;
+
+  const addTaskHandler = async () => {
+    await supabase.from("Tasks").insert(
+        [{Name, Activity, StartDate, EndDate}]
+    ).single();
+    setTask(initialTask);
+  };
+
   return (
       <div className="flex flex-col items-center justify-center py-2">
         <div>
@@ -31,6 +51,8 @@ export default function Home() {
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                           id="taskName"
                           type="text"
+                          value={Name.toString()}
+                          onChange={(e) => setTask({...task, Name: e.target.value})}
                       />
                     </div>
                     <div className="mb-4">
@@ -45,6 +67,9 @@ export default function Home() {
                           className="form-textarea mt-1 block shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                           rows="3"
                           placeholder="Task Activity"
+                          value={Activity.toString()}
+                          onChange={(e) => setTask({...task, Activity: e.target.value})
+                          }
                       ></textarea>
                     </div>
 
@@ -59,6 +84,8 @@ export default function Home() {
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                           id="startDate"
                           type="date"
+                          value={StartDate.toString()}
+                          onChange={e => setTask({...task, StartDate: e.target.value})}
                       />
                     </div>
                     <div className="mb-4">
@@ -72,12 +99,15 @@ export default function Home() {
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                           id="endDate"
                           type="date"
+                          value={EndDate.toString()}
+                          onChange={e => setTask({...task, EndDate: e.target.value})}
                       />
                     </div>
                     <div className="flex items-center justify-between">
                       <button
                           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                           type="button"
+                          onClick={addTaskHandler}
                       >
                         Add Task
                       </button>
