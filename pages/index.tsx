@@ -167,22 +167,28 @@ export default function Home() {
                       Action
                     </th>
                   </tr>
-                  <tr>
-                    <td className="border px-4 py-4"></td>
-                    <td className="border px-4 py-4"></td>
-                    <td className="border px-8 py-4"></td>
-                    <td className="border px-8 py-4"></td>
-                    <td className="border px-8 py-4"></td>
-                    <td className="border px-8 py-4">
-                      {" "}
-                      <button
-                          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                          type="button"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
+                    { task && tasks.map((t, i) => {
+                      return (
+                          <tr>
+                            <td className="border px-8 py-4">{ i + 1}</td>
+                            <td className="border px-8 py-4">{ t.Name }</td>
+                            <td className="border px-8 py-4">{ t.Activity }</td>
+                            <td className="border px-8 py-4">{ t.StartDate }</td>
+                            <td className="border px-8 py-4">{ t.EndDate }</td>
+                            <td className="border px-8 py-4">
+
+                              {" "}
+                              <button
+                                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                  type="button"
+                              >
+                                Delete
+                              </button>
+                            </td>
+                          </tr>
+                      )
+                    }) }
+
                   </tbody>
                 </table>
               </div>
