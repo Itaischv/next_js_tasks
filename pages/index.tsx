@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { supabase } from "../client";
-import { useState} from "react";
+import {useEffect, useState} from "react";
 
 
 export default function Home() {
@@ -10,9 +10,19 @@ export default function Home() {
     StartDate: "",
     EndDate: ""
   }
+  const [loading, setLoading] = useState(true);
   const [task, setTask] = useState(initialTask);
+  const [tasks, setTasks] = useState(initialTask);
 
   const { Name, Activity, StartDate, EndDate } = task;
+
+
+  const getTasks = async () => {
+    setLoading(true);
+    const { data } = await supabase.from("Tasks").select();
+    setTasks(data);
+    setLoading(false);
+  }
 
   const addTaskHandler = async () => {
     await supabase.from("Tasks").insert(
@@ -21,6 +31,23 @@ export default function Home() {
     setTask(initialTask);
   };
 
+  useEffect(() => {
+    getTasks();
+  }, [])
+  if (loading)
+    return (
+        <div className="flex justify-center items-center">
+          <div
+              className="
+      animate-spin
+      rounded-full
+      h-32
+      w-32
+      border-t-2 border-b-2 border-blue-500 mt-36
+    "
+          ></div>
+        </div>
+    );
   return (
       <div className="flex flex-col items-center justify-center py-2">
         <div>
