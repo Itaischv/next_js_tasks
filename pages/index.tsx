@@ -29,7 +29,13 @@ export default function Home() {
         [{Name, Activity, StartDate, EndDate}]
     ).single();
     setTask(initialTask);
+    getTasks();
   };
+
+  const deleteTask = async (id) => {
+    await supabase.from("Tasks").delete().eq("id", id);
+    getTasks();
+  }
 
   useEffect(() => {
     getTasks();
@@ -181,6 +187,7 @@ export default function Home() {
                               <button
                                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                   type="button"
+                                  onClick={() => deleteTask(t.id)}
                               >
                                 Delete
                               </button>
